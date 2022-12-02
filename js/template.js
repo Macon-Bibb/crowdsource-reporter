@@ -118,8 +118,10 @@ define([
       // The sharing url defines where to search for the web map and application content. The
       // default value is arcgis.com.
       this._initializeApplication();
+
       // check if signed in. Once we know if we're signed in, we can get appConfig, orgConfig and create a portal if needed.
       this._checkSignIn().always(lang.hitch(this, function (response) {
+
         // execute these tasks async
         all({
           // get localization
@@ -272,6 +274,7 @@ define([
     _checkSignIn: function () {
       var deferred, signedIn, oAuthInfo;
       deferred = new Deferred();
+
       //If there's an oauth appid specified register it
       if (this.config.oauthappid) {
         oAuthInfo = new ArcGISOAuthInfo({
@@ -282,6 +285,7 @@ define([
         IdentityManager.registerOAuthInfos([oAuthInfo]);
       }
       // check app access or signed-in status
+
       if (this.config.oauthappid && this.templateConfig.esriEnvironment) {
         signedIn = IdentityManager.checkAppAccess(this.config.sharinghost + "/sharing", this.config.oauthappid);
         signedIn.always(function (response) {
@@ -294,6 +298,7 @@ define([
           deferred.resolve(response);
         });
       }
+
 
       return deferred.promise;
     },

@@ -136,7 +136,6 @@ define([
                 this._setAppHeaderMenu();
                 // Show the sign in button
                 domClass.remove(this.userControlContainer, "esriCTHidden");
-
                 //handle signin/logged_in_userName clicked
                 on(this.esriCTLoginCredentialsDiv, "click, keypress", lang.hitch(this, this._toggleLoginOptionsVisibility));
                 $(this.esriCTLoginCredentialsDiv).focusin(lang.hitch(this, function (evt) {
@@ -155,7 +154,6 @@ define([
                     domClass.replace(this.mobileMenuBurger, "esriCTHidden", "esriCTMobileIcons");
                 }
             }
-
             if (this.appConfig.enableHelp) {
                 domClass.remove(this.helpButton, "esriCTHidden");
                 domStyle.set(this.esriCTLoginOptionsDiv, "right", "50px");

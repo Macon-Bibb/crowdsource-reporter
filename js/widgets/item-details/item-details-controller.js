@@ -1222,59 +1222,62 @@ define([
         _showAttachments: function (item) {
             var container, fieldContent, i, imageContent, imagePath, imageDiv = [];
             domConstruct.empty(this.gallery);
-            this.selectedLayer.queryAttachmentInfos(item.attributes[this.selectedLayer.objectIdField], lang.hitch(this, function (infos) {
-                container = domConstruct.create("div", {
-                    "class": "esriCTDetailsContainer"
-                }, this.gallery);
-                domConstruct.create("div", {
-                    "innerHTML": this.appConfig.i18n.gallery.galleryHeaderText,
-                    "aria-label": this.appConfig.i18n.gallery.galleryHeaderText,
-                    "tabindex": "-1",
-                    "class": "esriCTItemDetailHeader esriCTListItemHeader esriCTLargeText esriCTCalculatedBodyTextColorAsBorder"
-                }, container);
-                // If attachments found
-                if (infos && infos.length > 0) {
-                    fieldContent = domConstruct.create("div", {
-                        "class": "container esriCTListData row"
+            console.log(item.attributes.is_image_approved)
+            if(item.attributes.is_image_approved === 1){
+                this.selectedLayer.queryAttachmentInfos(item.attributes[this.selectedLayer.objectIdField], lang.hitch(this, function (infos) {
+                    container = domConstruct.create("div", {
+                        "class": "esriCTDetailsContainer"
+                    }, this.gallery);
+                    domConstruct.create("div", {
+                        "innerHTML": this.appConfig.i18n.gallery.galleryHeaderText,
+                        "aria-label": this.appConfig.i18n.gallery.galleryHeaderText,
+                        "tabindex": "-1",
+                        "class": "esriCTItemDetailHeader esriCTListItemHeader esriCTLargeText esriCTCalculatedBodyTextColorAsBorder"
                     }, container);
-                    // Display all attached images in thumbnails
-                    for (i = 0; i < infos.length; i++) {
-                        imagePath = location.href.slice(0, location.href.lastIndexOf('/')) + this.appConfig.noAttachmentIcon;
-                        //Check if attachment is image/video and accordingly show the thumbnail
-                        if (infos[i].contentType.indexOf("image") > -1) {
-                            imagePath = infos[i].url;
-                        } else if(infos[i].contentType.indexOf("video") > -1) {
-                            imagePath = location.href.slice(0, location.href.lastIndexOf('/')) + "/images/video.png";
-                        }
-                        imageContent = domConstruct.create("span", {
-                            "class": "esriCTIssueImgSpan col esriCTCalculatedBodyTextColorAsBorder",
-                            "alt": infos[i].name
-                        }, fieldContent);
-                        domClass.add(imageContent, "esriCTImageLoader");
-                        imageDiv[i] = domConstruct.create("img", {
-                            "alt": infos[i].url,
-                            "class": "esriCTIssueDetailImg esriCTPointerCursor",
-                            "aria-label": infos[i].name,
-                            tabindex: "0",
-                            "src": imagePath
-                        }, imageContent);
-                        // Hide loader image after image is loaded
-                        on(imageDiv[i], "load", lang.hitch(this, this._onImageLoad));
-                        // Show attachment in new tab on click of the attachment thumbnail
-                        on(imageDiv[i], "click, keypress", lang.hitch(this, function (evt) {
-                            if (!this.appUtils.validateEvent(evt)) {
-                                return;
+                    // If attachments found
+                    if (infos && infos.length > 0) {
+                        fieldContent = domConstruct.create("div", {
+                            "class": "container esriCTListData row"
+                        }, container);
+                        // Display all attached images in thumbnails
+                        for (i = 0; i < infos.length; i++) {
+                            imagePath = location.href.slice(0, location.href.lastIndexOf('/')) + this.appConfig.noAttachmentIcon;
+                            //Check if attachment is image/video and accordingly show the thumbnail
+                            if (infos[i].contentType.indexOf("image") > -1) {
+                                imagePath = infos[i].url;
+                            } else if(infos[i].contentType.indexOf("video") > -1) {
+                                imagePath = location.href.slice(0, location.href.lastIndexOf('/')) + "/images/video.png";
                             }
-                            this._openAttachment(evt);
-                        }));
+                            imageContent = domConstruct.create("span", {
+                                "class": "esriCTIssueImgSpan col esriCTCalculatedBodyTextColorAsBorder",
+                                "alt": infos[i].name
+                            }, fieldContent);
+                            domClass.add(imageContent, "esriCTImageLoader");
+                            imageDiv[i] = domConstruct.create("img", {
+                                "alt": infos[i].url,
+                                "class": "esriCTIssueDetailImg esriCTPointerCursor",
+                                "aria-label": infos[i].name,
+                                tabindex: "0",
+                                "src": imagePath
+                            }, imageContent);
+                            // Hide loader image after image is loaded
+                            on(imageDiv[i], "load", lang.hitch(this, this._onImageLoad));
+                            // Show attachment in new tab on click of the attachment thumbnail
+                            on(imageDiv[i], "click, keypress", lang.hitch(this, function (evt) {
+                                if (!this.appUtils.validateEvent(evt)) {
+                                    return;
+                                }
+                                this._openAttachment(evt);
+                            }));
+                        }
+                    } else {
+                        domConstruct.create("div", { "innerHTML": this.appConfig.i18n.gallery.noAttachmentsAvailableText, "class": "esriCTGalleryNoAttachment esriCTDetailsNoResult esriCTSmallText" }, this.gallery);
                     }
-                } else {
-                    domConstruct.create("div", { "innerHTML": this.appConfig.i18n.gallery.noAttachmentsAvailableText, "class": "esriCTGalleryNoAttachment esriCTDetailsNoResult esriCTSmallText" }, this.gallery);
-                }
-            }), lang.hitch(this, function (err) {
-                this.appUtils.hideLoadingIndicator();
-                this.appUtils.showError(err.message);
-            }));
+                }), lang.hitch(this, function (err) {
+                    this.appUtils.hideLoadingIndicator();
+                    this.appUtils.showError(err.message);
+                }));
+            }
         },
 
         /**

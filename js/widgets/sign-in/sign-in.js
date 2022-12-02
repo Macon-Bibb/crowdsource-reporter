@@ -105,7 +105,9 @@ define([
             setTimeout(lang.hitch(this, function () {
                 $(this.signinGuestButton).focus();
             }), 200);
-
+            this.hideSignInDialog();
+            this.loadApplication(null);
+            this.isUserLoggedIn = true;
         },
 
         /**

@@ -49,7 +49,7 @@ define([
     "esri/geometry/Point",
     "widgets/locator/locator",
     "widgets/help/help",
-    "widgets/bootstrapmap/bootstrapmap"
+    "widgets/bootstrapmap/bootstrapmap",
 ], function (declare, kernel, lang, dateLocale, _WidgetBase, _TemplatedMixin, domConstruct, domClass, on, has, domAttr, array, dom, touch, domGeom, domStyle, query, dojowindow, Deferred, dijitTemplate, string, locale, GraphicsLayer, Graphic, Draw, webMercatorUtils, SimpleLineSymbol, SimpleFillSymbol, SimpleMarkerSymbol, Polygon, Point, Locator, Help, BootstrapMap) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: dijitTemplate,
@@ -529,11 +529,6 @@ define([
         _filterOperationalLayers: function (opLayers) {
             var i;
             for (i = 0; i < opLayers.length; i++) {
-                //With new MapViewer 'visibility' is an optional property with an implicit default of true
-                var layerVisibility = true;
-                if (opLayers[i].hasOwnProperty('visibility') && !opLayers[i].visibility) {
-                    layerVisibility = false;
-                }
                 // if layerId matches store it in this.layer
                 // else remove that layer form map, so that only selected layer is visible on map.
                 if (opLayers[i].id === this.layerId) {
@@ -554,7 +549,7 @@ define([
                                 if ((opLayers[i].resourceInfo.capabilities.indexOf("Create") === -1) &&
                                         ((opLayers[i].resourceInfo.capabilities.indexOf("Update") === -1) ||
                                         (opLayers[i].resourceInfo.capabilities.indexOf("Editing") === -1)) &&
-                                        layerVisibility) {
+                                        opLayers[i].visibility) {
                                     opLayers[i].layerObject.show(); // display non-editable layer
                                     // condition to check feature layer with create, edit, delete permissions and popup enabled, but all fields marked display only
                                 } else if ((opLayers[i].resourceInfo.capabilities.indexOf("Create") !== -1) &&
@@ -578,7 +573,7 @@ define([
                             array.forEach(opLayers[i].featureCollection.layers, lang.hitch(this, function (featureCollectionLayer) {
                                 if (featureCollectionLayer.layerObject && (featureCollectionLayer.layerObject.capabilities.indexOf("Create") === -1) &&
                                         ((featureCollectionLayer.layerObject.capabilities.indexOf("Editing") === -1) ||
-                                        (featureCollectionLayer.layerObject.capabilities.indexOf("Update") === -1)) && layerVisibility) {
+                                        (featureCollectionLayer.layerObject.capabilities.indexOf("Update") === -1)) && opLayers[i].visibility) {
                                     featureCollectionLayer.layerObject.hide();
                                 }
                             }));
@@ -1400,6 +1395,22 @@ define([
         _codedValueOnChange: function (currentField) {
             // event on change
             on(this.inputContent, "change", lang.hitch(this, function (evt) {
+                // If the field is is_vacant, listen the selection
+                if(currentField.name === "is_vacant" && evt.target.selectedOptions[0].value == 1){
+
+                    var alert = new Help({
+                        "config": this.config,
+                        "title": "alert",
+                        "dialog": "alert",
+                        "content": "Blighted property has to be vacant.",
+                        "appUtils": this
+                    });
+                    alert.showDialog("alert");
+                    $("#"+alert.id).on('hidden.bs.modal',function(){
+                        location.reload();
+                    });
+                } 
+
                 // function call to take appropriate actions on selection of a subtype
                 if (currentField.typeField) {
                     this._validateTypeFields(evt, currentField);
