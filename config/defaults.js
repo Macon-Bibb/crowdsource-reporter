@@ -18,11 +18,11 @@
 define({
     //Default configuration settings for the application. This is where you'll define things like a bing maps key,
     //default web map, default app color theme and more. These values can be overwritten by template configuration settings and url parameters.
-    "appid": "",
-    "webmap": "",
-    "oauthappid": null,
+    "appid": "5a5ce5ed79864fd49622ecbd5e7949ba",
+    "webmap": "d48cb9a728a4420795e362d54427c09d",
+    "oauthappid": "123",
     //Group templates must support a group url parameter. This will contain the id of the group.
-    "group": "520b1bd79fa74f0f9f3d13315dab6915",
+    "group": "7d35304c13544234b465e0575e154c6d",
     //Enter the url to the proxy if needed by the application. See the 'Using the proxy page' help topic for details
     //http://developers.arcgis.com/en/javascript/jshelp/ags_proxy.html
     "proxyurl": "proxy/proxy.ashx",
@@ -122,7 +122,7 @@ define({
     "enableUSNGSearch": false,
     "enableMGRSSearch": false,
     "enableLatLongSearch": false,
-    "geographicalExtentLayer": "",
+    "geographicalExtentLayer": "https://www.arcgis.com/home/item.html?id=e1168664be5c484cb5a577681f4c42d0",
     //Lower level configuration
     "submitReportButtonText" : "Submit a Report", // Text for submit report button
     "submitReportButtonColor": "#35ac46", //Color for Submit Report button.If EMPTY default color will be  #35ac46.
@@ -155,7 +155,7 @@ define({
     // reporting period value
     "reportingPeriodDialogTitle": "Reporting Period Closed",
     "reportingPeriodDialogContent": "We are no longer accepting new reports for this project.",
-    "featureOutsideAOIMsg": "Feature cannot be added outside study area.",
+    "featureOutsideAOIMsg": "Feature cannot be added outside study area1.",
     "commentStartDate": "", // Comment start date
     "commentStartTime": "", // Comment start time
     "commentEndDate" : "", // Comment end date

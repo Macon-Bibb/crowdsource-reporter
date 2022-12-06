@@ -1569,7 +1569,9 @@ define([
                         this._canDrawFeature(evt, this._selectedMapDetails).then(lang.hitch(this, function (canDraw) {
                             if (!canDraw) {
                                 if (this.config.featureOutsideAOIMsg) {
-                                    alert(this.config.featureOutsideAOIMsg);
+                                    //Use customized msg
+                                    //alert(this.config.featureOutsideAOIMsg);
+                                    alert("We only accept report from Pleasant Hill area.")
                                 } else {
                                     alert(this.config.i18n.main.featureOutsideAOIMessage);
                                 }
@@ -1737,6 +1739,8 @@ define([
         _canDrawFeature: function (evt, selectedMapDetails) {
             var def = new Deferred(), query, queryTask, layerDefinitionExpression, featureGeometry;
             featureGeometry = evt.geometry || evt;
+            //add extent layer to the app
+            this._webMapListWidget.geographicalExtentLayer = "https://services2.arcgis.com/zPFLSOZ5HzUzzTQb/arcgis/rest/services/Pleasant_Hill_Boundary/FeatureServer/4";
             if (!featureGeometry || !this._webMapListWidget ||
                     !this._webMapListWidget.geographicalExtentLayer) {
                 //If valid extent layer is not configured allow user to add feature without any restrictions

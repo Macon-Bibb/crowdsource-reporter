@@ -1396,7 +1396,7 @@ define([
             // event on change
             on(this.inputContent, "change", lang.hitch(this, function (evt) {
                 // If the field is is_vacant, listen the selection
-                if(currentField.name === "is_vacant" && evt.target.selectedOptions[0].value == 1){
+                if(currentField.name === "is_vacant" && evt.target.selectedOptions[0].value == 2){
 
                     var alert = new Help({
                         "config": this.config,
